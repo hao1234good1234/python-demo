@@ -20,3 +20,11 @@ if score >= 60:
 else:
     print(name, "不及格")
 print("结束")
+
+for i in range(5):
+    print("i =", i)
+print("循环结束")
+def greet(person):
+    print("Hello,", person)
+greet("Alice")
+greet("Bob")
