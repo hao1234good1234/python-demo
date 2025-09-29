@@ -45,6 +45,19 @@ print(f"{num1} + {num2} = {result}")
 
 
 '''
+处理错误输入
+立即转换类型
+'''
+while True:
+    try:
+        num = int(input("请输入一个整数："))
+        break
+    except ValueError:
+        print("❌ 输入无效！请输入一个整数。")
+
+
+
+'''
 动手练习
 '''
 # 练习 1：问候程序
