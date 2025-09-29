@@ -195,6 +195,19 @@ while True:
         print("程序结束")
         break
     print(f"你输入了：{user_input}")
+print("======================")
 
 
 
+# 练习 4：for 循环嵌套，统计二维列表元素总和
+matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+total = 0
+for row in matrix:
+    for num in row:
+        total += num
+print(f"二维列表所有元素之和：{total}")
+print("======================")
