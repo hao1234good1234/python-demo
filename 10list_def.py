@@ -172,3 +172,13 @@ a = [1, 2, 3]
 b = [3, 4, 5]
 mergered_list = list(set(a + b))
 print(sorted(mergered_list))
+
+# 4.列表的浅拷贝和深拷贝
+old_list = [1, 2, 3, [8,9], (3, 5, 6, 7)]
+# 浅拷贝
+new_list = old_list.copy()
+print(new_list)
+# 深拷贝（需要导入 copy 模块）
+import copy
+deep_copy = copy.deepcopy(old_list)
+print(deep_copy)

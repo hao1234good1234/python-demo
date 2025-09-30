@@ -72,6 +72,7 @@ print(nums)
 # last = nums.pop()  # 删除末尾元素并返回它 →  last=20, nums=[10, 30]
 index_2_num = nums.pop(2)  # 删除位置2的元素并返回它
 print(index_2_num, nums)
+# del nums[0:2]  # 删除位置0-1的元素
 del nums[0]  # 删除第一个元素 → nums=[30]
 print(nums)
 # ⚠️ 注意：
@@ -122,6 +123,10 @@ print(sorted_scores)
 words = ["hello", "world", "hi", "python", "java", "vue"]
 words.sort(key=len, reverse=True)  # 按字符串的长度降序-> [python, vue, java, hello, world, hi]
 print(words)
+
+scores = [85, 92, 78, 96, 88]
+reversed_scores = list(reversed(scores))  # 返回反转的列表
+print(reversed_scores)
 
 # 8. 列表+循环
 # （1）遍历列表 (推荐用for循环)
