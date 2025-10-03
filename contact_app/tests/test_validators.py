@@ -1,6 +1,6 @@
 # 单元测试
 import pytest
-from utils.validators import is_valid_phone
+from utils.validators import is_valid_phone, is_valid_name
 
 # def test_valid_phone():
 #     """
@@ -25,3 +25,7 @@ from utils.validators import is_valid_phone
                           ("", False)])
 def test_valid_phone(phone, expected):
     assert is_valid_phone(phone) == expected
+
+def test_valid_name():
+    assert is_valid_name("张三") == True
+    assert is_valid_name("") == False

@@ -25,8 +25,8 @@ def find_contact(contacts: List[Dict], name: str) -> Dict | None:
             return contact
     return None
 # 使用 `if __name__ == "__main__"` 测试模块，这样就可以直接在运行该模块的时候测试功能
-if __name__ == "__main__":
-    # 直接运行 contacts.py 时测试
-    contacts = add_contact([], "测试", "13800138000")
-    print(contacts)
+# if __name__ == "__main__":
+#     # 直接运行 contacts.py 时测试
+#     contacts = add_contact([], "测试", "13800138000")
+#     print(contacts)
 
