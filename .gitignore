@@ -23,3 +23,5 @@ photo.jpeg
 students.csv
 user.json
 
+# JSON、CSV（不要提交到 Git）
+data/

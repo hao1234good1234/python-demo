@@ -27,6 +27,9 @@
 2. windows一键安装脚本，运行安装脚本（自动创建虚拟环境 + 安装依赖）：
    install.bat
 
+   如果是在单个依赖后面安装：
+   pip install requests -i https://pypi.tuna.tsinghua.edu.cn/simple/
+
 3. macOS / Linux安装依赖
    # 创建虚拟环境
    python -m venv venv
