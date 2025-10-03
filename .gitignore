@@ -25,3 +25,6 @@ user.json
 
 # JSON、CSV（不要提交到 Git）
 data/
+
+# 单元测试
+.coverage
