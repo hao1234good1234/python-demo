@@ -1,3 +1,16 @@
+# 虚拟环境
+venv/
+ENV/
+env/
+
+# 依赖清单（可选，但通常提交 requirements.txt）
+# 不要忽略 requirements.txt！
+
+# 其他
+__pycache__/
+*.pyc
+.DS_Store
+# 自定义的排除文件
 contacts.json
 copy.jpeg
 hello.txt
@@ -5,3 +18,4 @@ my_note.txt
 photo.jpeg
 students.csv
 user.json
+
