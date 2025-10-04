@@ -10,7 +10,7 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.FileHandler("contact_app.log", encoding="utf-8"),  # 写入文件
+        logging.FileHandler("contact_app2.log", encoding="utf-8"),  # 写入文件
         logging.StreamHandler(),  # 输出到终端
     ],
 )
