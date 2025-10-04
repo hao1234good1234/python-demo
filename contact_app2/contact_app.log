@@ -1,0 +1,27 @@
+2025-10-04 15:17:05,827 - contact_app2.cli - INFO - 收到添加请求：name = Bob, phone =15739202033
+2025-10-04 15:17:05,829 - contact_app2.cli - INFO - 添加联系人成功：name = Bob, phone = 15739202033
+2025-10-04 15:18:47,087 - contact_app2.cli - INFO - 收到添加请求：name = Bob, phone =15739202033
+2025-10-04 15:18:47,089 - contact_app2.cli - INFO - 添加联系人成功：name = Bob, phone = 15739202033
+2025-10-04 15:19:23,531 - contact_app2.cli - INFO - 收到列出联系人请求
+2025-10-04 15:20:02,414 - contact_app2.cli - INFO - 收到查找请求：name = Bob
+2025-10-04 15:20:02,415 - contact_app2.cli - INFO - 找到联系人：name = Bob, phone = 15739202033
+2025-10-04 15:20:18,795 - contact_app2.cli - INFO - 收到查找请求：name = lisi
+2025-10-04 15:20:18,796 - contact_app2.cli - INFO - 找到联系人：name = lisi, phone = 13729899255
+2025-10-04 15:20:27,727 - contact_app2.cli - INFO - 收到列出联系人请求
+2025-10-04 15:22:45,938 - contact_app2.cli - INFO - 收到添加请求：name = haha, phone =155
+2025-10-04 15:22:45,939 - contact_app2.cli - WARNING - 手机号无效：155
+2025-10-04 15:32:29,894 - contact_app2.cli - DEBUG - 调试模式已开启
+2025-10-04 15:32:29,895 - contact_app2.cli - INFO - 收到添加请求：name = xiaoli, phone =15620901030
+2025-10-04 15:32:29,898 - contact_app2.cli - INFO - 添加联系人成功：name = xiaoli, phone = 15620901030
+2025-10-04 15:34:44,415 - contact_app2.cli - DEBUG - 调试模式已开启
+2025-10-04 15:34:44,416 - contact_app2.cli - INFO - 收到添加请求：name = xiaoli, phone =15620901030
+2025-10-04 15:34:44,417 - contact_app2.cli - DEBUG - debug 模式，name = xiaoli, phone = 15620901030
+2025-10-04 15:34:44,419 - contact_app2.cli - INFO - 添加联系人成功：name = xiaoli, phone = 15620901030
+2025-10-04 15:36:00,828 - contact_app2.cli - DEBUG - 调试模式已开启
+2025-10-04 15:36:00,829 - contact_app2.cli - INFO - 收到添加请求：name = libai, phone =15590908899
+2025-10-04 15:36:00,830 - contact_app2.cli - DEBUG - debug 模式，name = libai, phone = 15590908899
+2025-10-04 15:36:00,831 - contact_app2.cli - INFO - 添加联系人成功：name = libai, phone = 15590908899
+2025-10-04 15:36:18,604 - contact_app2.cli - INFO - 收到列出联系人请求
+2025-10-04 15:37:34,571 - contact_app2.cli - DEBUG - 调试模式已开启
+2025-10-04 15:37:34,572 - contact_app2.cli - INFO - 收到列出联系人请求
+2025-10-04 15:37:34,572 - contact_app2.cli - DEBUG - debug 模式，列出联系人

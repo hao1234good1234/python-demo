@@ -1,0 +1,2 @@
+[console_scripts]
+contact_app2 = contact_app2.cli:cli

@@ -1,0 +1,17 @@
+setup.py
+src/contact_app/__init__.py
+src/contact_app2/__init__.py
+src/contact_app2/cli.py
+src/contact_app2.egg-info/PKG-INFO
+src/contact_app2.egg-info/SOURCES.txt
+src/contact_app2.egg-info/dependency_links.txt
+src/contact_app2.egg-info/entry_points.txt
+src/contact_app2.egg-info/requires.txt
+src/contact_app2.egg-info/top_level.txt
+src/contact_app/core/__init__.py
+src/contact_app/core/contacts.py
+src/contact_app/core/storage.py
+src/contact_app/utils/__init__.py
+src/contact_app/utils/validators.py
+tests/test_contacts.py
+tests/test_validators.py
