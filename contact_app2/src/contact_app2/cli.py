@@ -1,18 +1,25 @@
 # 新增：命令行入口
 import logging
 import click
+import os
+from dotenv import load_dotenv
 from contact_app2.core.contacts import add_contact, find_contact, delete_contact
 from contact_app2.core.storage import load_contacts, save_contacts
 from contact_app2.utils.validators import is_valid_name, is_valid_phone
 
-
+load_dotenv()  # 加载 .env配置文件
+# 这个库dotenv能自动加载 `.env` 文件中的变量到 `os.environ`
+# 从环境变量中读取配置
+LOG_FILE = os.getenv("LOG_FILE", "contact_app.log") #从配置读取，如果没有设置，就使用默认值"contact_app2.log"
+LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 
 # 🔧 配置日志：同时输出到控制台和文件
 logging.basicConfig(
-    level=logging.INFO,
+    # level=logging.INFO,
+    level=getattr(logging, LOG_LEVEL.upper(), logging.INFO), # 将字符串转换为日志级别，如果无法转换，使用默认级别INFO
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.FileHandler("contact_app2.log", encoding="utf-8"),  # 写入文件
+        logging.FileHandler(LOG_FILE, encoding="utf-8"),  # 写入文件
         logging.StreamHandler(),  # 输出到终端
     ],
 )
