@@ -147,3 +147,94 @@ def cli(debug):
 # ├── contact_app.log   ← 所有操作记录在这里！
 # ├── cli.py
 # └── ...
+
+# 二、使用logging记录日志，是每个文件都要走一遍logging的使用步骤吗？
+
+# **答案是：**
+# - ✅ **每个文件都要 `import logging`**
+# - ✅ **每个文件都要 `logger = logging.getLogger(__name__)`**
+# - ❌ **但 `logging.basicConfig()` 只需要在程序入口（如 `cli.py`）调用一次！**
+
+# ✅ 正确做法：分层设计
+# 📁 1. **主入口文件（如 `cli.py`）——配置一次**
+# cli.py（程序启动点）
+import logging
+import click
+
+# 🔧 只在这里配置一次！
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler("contact_app.log", encoding="utf-8"),
+        logging.StreamHandler()
+    ]
+)
+
+logger = logging.getLogger(__name__)
+
+@click.group()
+def cli():
+    pass
+
+@cli.command()
+def add():
+    logger.info("调用 add 命令")
+    from contact_app.core.contacts import add_contact
+    add_contact("Alice", "13800138000")  # 这个函数内部也会打日志
+
+# ✅ `basicConfig()` 只在程序最开始运行一次，通常放在 `main` 模块或 CLI 入口。
+
+
+
+# 📁 2. **其他模块文件（如 `core/contacts.py`）——只获取 logger**
+# src/contact_app/core/contacts.py
+import logging
+
+# ✅ 每个文件都要这行，但不要 basicConfig！
+logger = logging.getLogger(__name__)
+
+def add_contact(name, phone):
+    logger.debug(f"准备添加联系人: {name}")  # DEBUG 级别
+    if not name:
+        logger.warning("姓名为空")  # WARNING
+        raise ValueError("姓名不能为空")
+    logger.info(f"成功创建联系人对象: {name} - {phone}")
+    return {"name": name, "phone": phone}
+
+# 📁 3. **工具模块（如 `utils/validators.py`）——同样只获取 logger**
+# src/contact_app/utils/validators.py
+import logging
+
+logger = logging.getLogger(__name__)
+
+def is_valid_phone(phone):
+    if not phone.isdigit() or len(phone) != 11:
+        logger.debug(f"手机号校验失败: {phone}")
+        return False
+    logger.debug(f"手机号校验通过: {phone}")
+    return True
+
+# 🔍 为什么这样设计？
+# - `logging` 是 **全局配置系统**，配置一次，全局生效。
+# - `getLogger(__name__)` 会根据模块名创建**独立命名的日志器**，方便你按模块过滤日志。
+#   - 例如：`contact_app.core.contacts`、`contact_app.utils.validators`
+# - 日志最终都会走同一个配置（格式、级别、输出目标），但来源清晰。
+
+# ✅ 最佳实践总结
+# | 操作                           | 主入口（cli.py） | 其他模块（*.py） |
+# | ------------------------------ | ---------------- | ---------------- |
+# | `import logging`               | ✅                | ✅                |
+# | `basicConfig()`                | ✅ **只在这里**   | ❌ **不要**       |
+# | `logger = getLogger(__name__)` | ✅                | ✅                |
+# | `logger.info/debug/warning`    | ✅                | ✅                |
+
+# 🎯 额外技巧：按模块控制日志级别（高级）
+# 你甚至可以单独提高某个模块的日志级别：
+# 在 cli.py 中
+# logging.getLogger("contact_app.utils.validators").setLevel(logging.DEBUG)
+# 这样即使全局是 `INFO`，`validators.py` 里的 `DEBUG` 也能输出。
+
+
+## ✅ 结论
+# **每个 `.py` 文件都要 `import logging` 和 `logger = getLogger(__name__)`，但 `basicConfig()` 全项目只调用一次，在程序入口处。**
