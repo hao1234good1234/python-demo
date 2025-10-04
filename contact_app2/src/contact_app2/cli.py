@@ -55,10 +55,12 @@ def add(name, phone):
         save_contacts(contacts)
         logger.info(f"添加联系人成功：name = {name}, phone = {phone}") #成功记录
         click.echo(f"添加成功: {name} - {phone}")
+        click.echo(click.style("✅ 添加成功", fg="green"))
     except Exception as e:
         # 记录错误 + 完整堆栈
         logger.error(f"添加联系人失败：{e}", exc_info=True)
         click.echo(f"系统错误，请查看日志", err = True)
+        click.echo(click.style("❌ 添加失败", fg="red", bold=True))
         raise click.Abort()
 
 @cli.command()
