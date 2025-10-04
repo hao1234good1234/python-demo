@@ -14,22 +14,12 @@ __pycache__/
 # pip 配置（不要提交！）
 pip.ini
 
-# 自定义的排除文件
-contacts.json
-copy.jpeg
-hello.txt
-my_note.txt
-photo.jpeg
-students.csv
-user.json
-
-# JSON、CSV（不要提交到 Git）
-data/
-
 # 单元测试
 .coverage
 
-# 后来加的
+
+
+# ==================后来加的==========================
 # Python
 __pycache__/
 *.py[cod]
@@ -68,3 +58,14 @@ contact_app.log
 # OS generated files
 .DS_Store
 Thumbs.db
+
+
+# ==================自定义的排除文件==========================
+copy.jpeg
+hello.txt
+my_note.txt
+photo.jpeg
+students.csv
+contacts_data/
+data/
+*.json
