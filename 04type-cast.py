@@ -154,3 +154,117 @@ try:
     print("5年后你", age + 5, "岁")
 except ValueError:
     print("请输入合法的整数年龄")
+
+# 二、补充：bool()
+
+# 二、`bool()` 函数的作用
+# `bool()` 是一个**类型转换函数**，用于将任意对象转换为对应的布尔值。
+# 语法：
+# bool(x)
+# 它会根据 **“真值测试”（truthiness）** 规则，返回 `True` 或 `False`。
+# 注意：`bool()` 实际上是调用对象的 `__bool__()` 方法（如果存在），否则调用 `__len__()` 方法。如果两者都没有，则默认为 `True`。
+
+# 三、Python 中的“假值”（Falsy Values）
+# 在 Python 中，以下值在布尔上下文中被视为 **“假”（False）**：
+# | 值                                                           | 说明                               |
+# | ------------------------------------------------------------ | ---------------------------------- |
+# | `False`                                                      | 布尔假值本身                       |
+# | `None`                                                       | 表示“无”或空值                     |
+# | `0`                                                          | 所有数字类型的零：`0`, `0.0`, `0j` |
+# | `""`                                                         | 空字符串                           |
+# | `[]`                                                         | 空列表                             |
+# | `()`                                                         | 空元组                             |
+# | `{}`                                                         | 空字典                             |
+# | `set()`                                                      | 空集合                             |
+# | `frozenset()`                                                | 空不可变集合                       |
+# | 自定义对象：如果定义了 `__bool__()` 返回 `False`，或 `__len__()` 返回 `0` |                                    |
+
+# ✅ **记住口诀**：**“空、零、None、False” 就是假，其余都是真！**
+
+# 四、`bool()` 的工作原理（底层机制）
+# Python 在判断一个对象的真假时，按以下顺序：
+# 1. **先看有没有 `__bool__()` 方法**  
+#    - 如果有，调用它，返回值必须是 `True` 或 `False`。
+# 2. **如果没有 `__bool__()`，就看有没有 `__len__()` 方法**  
+#    - 如果有，调用它，若返回 `0` 则为 `False`，否则为 `True`。
+# 3. **如果都没有**，则默认为 `True`。
+
+# 示例：自定义类 根据所传参数的长度来判断
+class Box:
+    def __init__(self, items):
+        self.items = items
+
+    def __len__(self):
+        return len(self.items)
+
+box1 = Box([])      # 空
+box2 = Box([1, 2])  # 非空
+
+print(bool(box1))  # False（因为 len(box1) == 0）
+print(bool(box2))  # True
+
+# 如果我们定义 `__bool__()`，它会优先被使用：未上锁才为 True
+class SafeBox:
+    def __init__(self, locked):
+        self.locked = locked
+
+    def __bool__(self):
+        return not self.locked  # 未上锁才为 True
+
+safe1 = SafeBox(locked=True)
+safe2 = SafeBox(locked=False)
+
+print(bool(safe1))  # False
+print(bool(safe2))  # True
+# 五、常见 `bool()` 转换示例
+# | 表达式           | 结果    | 说明                     |
+# | ---------------- | ------- | ------------------------ |
+# | `bool(1)`        | `True`  | 非零数字为真             |
+# | `bool(0)`        | `False` | 零为假                   |
+# | `bool(-5)`       | `True`  | 负数也是非零             |
+# | `bool(0.0)`      | `False` | 浮点零也是假             |
+# | `bool("hello")`  | `True`  | 非空字符串为真           |
+# | `bool("")`       | `False` | 空字符串为假             |
+# | `bool(" ")`      | `True`  | 包含空格的字符串 ≠ 空！  |
+# | `bool([])`       | `False` | 空列表                   |
+# | `bool([0])`      | `True`  | 列表非空（即使内容是 0） |
+# | `bool({})`       | `False` | 空字典                   |
+# | `bool({"a": 0})` | `True`  | 字典有键值对，非空       |
+# | `bool(None)`     | `False` | None 是假                |
+# | `bool(True)`     | `True`  |                          |
+# | `bool(False)`    | `False` |                          |
+# ⚠️ 特别注意：
+# - `"0"` 是字符串，非空 → `True`
+# - `"False"` 也是字符串，非空 → `True`
+# - `[[]]` 是包含一个空列表的列表 → 非空 → `True`
+
+# 六、实际应用场景
+# 1. 判断变量是否“有意义”
+user_input = input("请输入内容：")
+if user_input:  # 等价于 if bool(user_input):
+    print("你输入了：", user_input)
+else:
+    print("你什么都没输！")
+
+# 2. 检查容器是否为空（推荐写法）
+# items = get_shopping_list()
+# if items:  # 不写 len(items) > 0，更 Pythonic！
+#     process(items)
+# else:
+#     print("购物车为空")
+
+# 3. 默认值处理
+def greet(name=None):
+    if not name:  # name 为 None 或 "" 都会进入这里
+        name = "陌生人"
+    print(f"你好，{name}！")
+
+# 八、小结
+# | 要点                               | 说明                                       |
+# | ---------------------------------- | ------------------------------------------ |
+# | `bool()` 是类型转换函数            | 返回 `True` 或 `False`                     |
+# | 假值只有少数几种                   | 空、零、None、False                        |
+# | 其他一切皆为真                     | 包括 `"0"`, `"False"`, `[0]`, `{"": 0}` 等 |
+# | 实际编程中很少显式写 `bool()`      | 因为 `if x:` 自动做真值测试                |
+# | 自定义类可通过 `__bool__` 控制真假 | 用于更灵活的对象逻辑                       |
+
