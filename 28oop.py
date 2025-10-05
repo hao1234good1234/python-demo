@@ -249,5 +249,3 @@ def save_contacts(contacts):
 #     save_contacts(contacts)
 #     logger.info(f"添加成功: {contact}")
 #     click.echo(f"✅ {contact}")
-
-## ✅ 第四步：OOP 如何帮助你学 Web 开发？
