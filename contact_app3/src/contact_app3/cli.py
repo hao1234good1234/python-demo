@@ -73,7 +73,7 @@ def list():
     # 输出通讯录信息
     # 遍历通讯录对象列表，输出每个通讯录对象的信息
     for i, contact in enumerate(contacts, start=1):
-        click.echo(f"{i}. {contact.name} - {contact.phone}")
+        click.echo(f"{i}. {contact.name} - {contact.phone} - {contact.email}")
 
 
 @cli.command()

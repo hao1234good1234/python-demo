@@ -4,7 +4,8 @@ class Contact:
     def __init__(self, name, phone, email=None, created_at=None):
         self.name = name
         self.phone = phone
-        self.email = email
+        # self.email,如果没有传，为123456@qq.com
+        self.email = email or "123456@qq.com"
         self.created_at = created_at or datetime.now().isoformat()
     def is_valid(self):
         return bool(self.name) and len(self.phone) == 11 and self.phone.isdigit()
