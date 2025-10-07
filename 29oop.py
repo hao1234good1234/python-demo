@@ -4,37 +4,40 @@ from typing import Self
 
 
 class Contact:
+    """
+    联系人类：封装姓名、电话、创建时间等信息。
+    所有数据访问均通过属性管理，确保数据一致性与安全性。
+    """
+
     species: str = "Human"  # ← 类属性：所有联系人都是人类
     VERSION: str = "1.0"
 
     name: str  # ← 实例属性
     phone: str
     email: str
-    created_at: str
 
     # email 是一个可选参数，类型是字符串或空值，默认为 None”
     def __init__(
-        self,
-        name: str,
-        phone: str,
-        email: str | None = None,
-        created_at: str | None = None,
+        self, name: str, phone: str, email: str | None = None
     ) -> None:  # 初始化方法
-        self.name = name  # ← 实例属性 # 公有：直接暴露
+        # ✅ 显式初始化所有内部属性（防御性编程）
+        self._name = None
         self._phone = None  # ← 1. 先初始化内部存储（受保护）
+        self._email = None
+        self._created_at = datetime.now().isoformat()  # ← 内部存储创建时间
+
+        # ✅ 通过公共接口赋值（触发验证）
+        self.name = name  # ← 实例属性 # 公有：直接暴露
         # 系统会这么读取：c1.phone = "15699882233", 实例c1里没有phone属性，但是系统中phone被@property装饰了，
         # phone从属性变成了property对象，会自动调用phone对象的__set__方法，又因为在类中定义了对phone的赋值的setter自定义方法
         # 系统会执行你自定义的setter方法：   def phone(self, value) -> self == c1, value == "15699882233"
         self.phone = phone  # ← 2. 通过“公共接口”赋值（会触发验证！）
         self.email = email or "123456@qq.com"  # ← 实例属性,默认值是 123456@qq.com
-        self._created_at = (
-            created_at or datetime.now().isoformat()
-        )  # ← 内部存储创建时间
 
-    # def __str__(self) -> str:  # ← 实例方法
-    #     return f"{self.name} - {self.phone}"
-    
-    def __repr__(self) -> str:
+    def __str__(self) -> str:  # ← 实例方法
+        return f"{self.name} - {self.phone}"
+
+    def __repr__(self) -> str:  # ← 实例方法
         # Contact(name='Alice', phone='13800138000') 加了!r会输出''单引号，方便开发人员查看
         # Contact(name=Alice, phone=13800138000)  没有加!r，看不出是字符串！
         return f"Contact(name={self.name!r}, phone={self.phone!r})"
@@ -44,8 +47,7 @@ class Contact:
         return cls(
             name=data.get("name"),  # ← 获取字典中的name键对应的值
             phone=data.get("phone"),
-            email=data.get("email"),
-            created_at=data.get("created_at"),
+            email=data.get("email")
         )
 
     @classmethod  # ← 类方法注解
@@ -62,31 +64,78 @@ class Contact:
         """验证姓名是否合法（工具函数）"""
         return bool(name.strip())
 
+    @staticmethod  # ← 静态方法注解
+    def validate_phone(phone: str) -> bool:  # ← 静态方法，没有self
+        """验证电话号码是否合法（工具函数）"""
+        return bool(isinstance(phone, str) and phone.isdigit() and len(phone) == 11)
+
+    # ===== name 属性管理 =====
+    @property
+    def name(self) -> str:
+        """获取联系人姓名（只读，不能为空）"""
+        return self._name
+
+    @name.setter
+    def name(self, value: str) -> None:
+        if not isinstance(value, str):
+            raise ValueError("姓名必须是字符串")
+        value = value.strip()  # ← 去除前后空格
+        if not value:
+            raise ValueError("姓名不能为空")
+        self._name = value
+
+    # ===== phone 属性管理 =====
     @property  # ← property装饰器, 将phone属性变成了一个property对象
     def phone(self) -> str:  # ← getter方法   # ← 这是“读取”接口
-        return self._phone  # ← 读取私有属性
+        """获取电话号码（返回 '未设置' 或有效号码）"""
+        return self._phone if self._phone is not None else "未设置"  # ← 读取私有属性
 
     @phone.setter  # 自定义phone的setter方法
     def phone(self, value: str) -> None:  # ← setter方法   # ← 这是“写入”接口
+        """设置电话号码（必须为11位数字字符串）"""
+        if value is None:
+            self._phone = None
+            return
         if not self._is_valid_phone(value):  # 调用内部方法
             raise ValueError("电话必须是11位，且只能是数字！")
         self._phone = value
 
     def _is_valid_phone(self, phone: str) -> bool:  # ← 内部方法
         """验证电话号码是否合法（工具函数）"""
-        return len(phone) == 11 and phone.isdigit()
+        return len(phone) == 11 and phone.isdigit() and isinstance(phone, str)
 
-    def is_valid(self) -> bool:  # ← 公共接口
-        return (
-            self.validate_name(self.name)
-            and self.validate_email(self.email)
-            and self._phone is not None
-        )
+    @phone.deleter
+    def phone(self):  # ← deleter方法   # ← 这是“删除”接口
+        """删除电话号码"""
+        print("电话号码已删除")
+        self._phone = None
 
+    # ===== email 属性管理 =====
+    @property
+    def email(self) -> str:
+        return self._email
+
+    @email.setter
+    def email(self, value: str):
+        if not self._is_valid_email(value):
+            raise ValueError("邮箱格式不正确！")
+        self._email = value
+
+    def _is_valid_email(self, email: str) -> bool:
+        return "@" in email and isinstance(email, str)
+
+    # ===== created_at 只读属性 =====
     @property  # 只有property，没有setter，只读
-    def created_at(self) -> str:  # ← getter方法   # ← 这是“读取”接口
+    def created_at(self) -> datetime:  # ← getter方法   # ← 这是“读取”接口
+        """获取联系人创建时间（只读）"""
         return self._created_at
 
+    # ===== 公共方法 =====
+    def is_valid(self) -> bool:  # ← 公共接口
+        """判断联系人是否有效（姓名必填，电话可选）"""
+        return self._name is not None
+
+    # ===== 计算属性 =====
     @property
     def full_info(self) -> str:
         return f"{self.name} <{self.phone}>"
@@ -159,8 +208,7 @@ print(c1.__str__())
 data = {
     "name": "小明",
     "phone": "15599883377",
-    "email": "123456@qq.com",
-    "created_at": "2022-01-01",
+    "email": "123456@qq.com"
 }
 c3 = Contact.from_dict(data)  # ← 不用传 name/phone，直接从字典创建对象
 print(c3.__dict__)
@@ -599,7 +647,7 @@ print(contact_Demo.phone)  # 13899330022
 try:
     contact_Demo.phone = "123"
 except ValueError as e:
-    print(e)          # "手机号必须是11位数字字符串"
+    print(e)  # "手机号必须是11位数字字符串"
 
 del contact_Demo.phone
 print(contact_Demo.phone)  # 未设置
@@ -632,6 +680,7 @@ print(contact_Demo.created_at)  # 2025-10-06 17:52:59.224081
 # 6️⃣ 高级技巧：动态属性 or 计算属性
 # 💡 场景：`full_name` 由 `first_name` + `last_name` 组成
 
+
 class Person:
     def __init__(self, first, last):
         self.first_name = first
@@ -640,12 +689,13 @@ class Person:
     @property
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
-    
+
     @full_name.setter
     def full_name(self, value):
         parts = value.split(" ", 1)
         self.first_name = parts[0]
         self.last_name = parts[1] if len(parts) > 1 else ""
+
 
 # 使用
 p = Person("张", "三丰")
@@ -663,8 +713,8 @@ print(p.last_name)  # 小龙
 # | `@name.deleter` | 定义 deleter（删） | ❌ 可选               | 安全删除 phone         |
 
 
-# 🔑 **记住**：     
+# 🔑 **记住**：
 
-# - 先有 `@property`，才能有 `.setter` 和 `.deleter`  
-# - 三个方法**函数名必须相同**  
+# - 先有 `@property`，才能有 `.setter` 和 `.deleter`
+# - 三个方法**函数名必须相同**
 # - 内部存储用 `_xxx` 避免递归
