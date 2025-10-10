@@ -1,10 +1,12 @@
 # tests/test_library_service.py
 import sys
 import os
+
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))  # 添加父目录
 from unittest.mock import Mock
 from core.models import Book, User
 from core.services import LibraryService
+
 
 class TestLibraryService:
     def test_add_book(self):
@@ -56,7 +58,9 @@ class TestLibraryService:
         mock_user_repo = Mock()
         service = LibraryService(mock_book_repo, mock_user_repo)
 
-        borrowed_book = Book("123", "Python", "Guido", is_borrowed=True, borrowed_by="u1")
+        borrowed_book = Book(
+            "123", "Python", "Guido", is_borrowed=True, borrowed_by="u1"
+        )
         mock_book_repo.get_by_isbn.return_value = borrowed_book
 
         result = service.return_book("123")

@@ -1,0 +1,15 @@
+# pyproject.toml
+[project]
+name = "library-system"
+version = "0.1.0"
+description = "A simple library management system with FastAPI"
+authors = [{name = "Your Name", email = "you@example.com"}]
+requires-python = ">=3.9"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
